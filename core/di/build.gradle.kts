@@ -8,7 +8,7 @@ android {
     defaultConfig {
         val asiaAccountUrl = "https://asia.api.riotgames.com/riot/account/"
         val krBaseUrl = "https://kr.api.riotgames.com/lol/"
-        val token = "RGAPI-5991d518-0403-41f0-a4cb-3ce4ff0bccf7"
+        val token = "RGAPI-e984c13a-bb71-48a4-ab5d-33bbdac8cbc4"
 
         buildConfigField("String", "ASIA_ACCOUNT_URL", "\"$asiaAccountUrl\"")
         buildConfigField("String", "KR_BASE_URL", "\"$krBaseUrl\"")
