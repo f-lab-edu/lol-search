@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-abstract class BaseViewModel<INTENT : Any, STATE : Parcelable, SIDE_EFFECT : Any>(
+interface SideEffect
+
+abstract class BaseViewModel<INTENT : Any, STATE : Parcelable, SIDE_EFFECT : SideEffect>(
     initialState: STATE,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
