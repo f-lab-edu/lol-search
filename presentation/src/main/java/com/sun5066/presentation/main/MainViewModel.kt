@@ -18,16 +18,16 @@ class MainViewModel @Inject constructor(
 
     override fun processIntent(intent: MainIntent) {
         when (intent) {
-            is MainIntent.Search -> search(intent)
+            is MainIntent.GetAccount -> search(intent)
         }
     }
 
-    private fun search(intent: MainIntent.Search) {
+    private fun search(intent: MainIntent.GetAccount) {
         safeLaunch(
             showLoadingIndicator = true,
         ) {
             val account = getAccountUseCase
-                .invoke(intent.tagLine, intent.tagLine)
+                .invoke(intent.gameName, intent.tagLine)
                 .let(accountDtoToVoMapper::toModel)
 
             updateState { copy(account = account) }

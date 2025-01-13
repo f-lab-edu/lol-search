@@ -17,5 +17,5 @@ data class MainState(
 
 @Immutable
 sealed interface MainIntent {
-    data class Search(val gameName: String, val tagLine: String) : MainIntent
+    data class GetAccount(val gameName: String, val tagLine: String) : MainIntent
 }
