@@ -13,4 +13,6 @@
     <!-- 503 --> <string name="common_msg_error_service_unavailable">서버를 사용할 수 없습니다. 잠시 후 다시 시도하세요.</string>
 
     <string name="common_msg_error_network">네트워크 문제가 발생했습니다.</string>
+
+    <string name="common_loading">Loading...</string>
 </resources>
