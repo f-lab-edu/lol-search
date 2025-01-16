@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-interface CommonSideEffect {
+sealed interface CommonSideEffect : SideEffect {
     data class LoadingIndicator(val show: Boolean) : CommonSideEffect
     data class ShowSnackBarRes(@StringRes val res: Int) : CommonSideEffect
 }
