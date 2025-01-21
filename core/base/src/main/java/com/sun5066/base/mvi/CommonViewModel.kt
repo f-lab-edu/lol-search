@@ -2,7 +2,6 @@ package com.sun5066.base.mvi
 
 import android.os.Parcelable
 import androidx.annotation.StringRes
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.sun5066.base.R
 import com.sun5066.config.Constants
@@ -18,9 +17,8 @@ sealed interface CommonSideEffect : SideEffect {
 }
 
 abstract class CommonViewModel<INTENT : Any, STATE : Parcelable>(
-    initialState: STATE,
-    savedStateHandle: SavedStateHandle
-) : BaseViewModel<INTENT, STATE, CommonSideEffect>(initialState, savedStateHandle) {
+    initialState: STATE
+) : BaseViewModel<INTENT, STATE, CommonSideEffect>(initialState) {
 
     private fun apiExceptionHandle(responseCode: Int) {
         when (responseCode) {

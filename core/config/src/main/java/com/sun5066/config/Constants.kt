@@ -14,6 +14,4 @@ object Constants {
     const val RESPONSE_CODE_SERVICE_UNAVAILABLE = 503
 
     const val INJECT_NAMED_RIOT_TOKEN = "riot_token"
-
-    const val MVI_VIEW_MODEL_STATE_KEY = "mvi_state"
 }

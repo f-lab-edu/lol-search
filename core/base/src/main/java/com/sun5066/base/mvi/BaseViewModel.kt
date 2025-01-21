@@ -1,26 +1,26 @@
 package com.sun5066.base.mvi
 
-import android.os.Parcelable
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.sun5066.config.Constants
 import com.sun5066.config.exception.RequireErrorHandleException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.onFailure
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 interface SideEffect
 
-abstract class BaseViewModel<INTENT : Any, STATE : Parcelable, SIDE_EFFECT : SideEffect>(
-    initialState: STATE,
-    private val savedStateHandle: SavedStateHandle
+abstract class BaseViewModel<INTENT : Any, STATE, SIDE_EFFECT : SideEffect>(
+    initialState: STATE
 ) : ViewModel() {
 
-    val state = savedStateHandle.getStateFlow(Constants.MVI_VIEW_MODEL_STATE_KEY, initialState)
+    private val _state = MutableStateFlow(initialState)
+    val state = _state.asStateFlow()
 
     private val currentState: STATE get() = state.value
 
@@ -42,7 +42,7 @@ abstract class BaseViewModel<INTENT : Any, STATE : Parcelable, SIDE_EFFECT : Sid
     ): Job
 
     protected fun updateState(reducer: STATE.() -> STATE) {
-        savedStateHandle[Constants.MVI_VIEW_MODEL_STATE_KEY] = reducer(currentState)
+        _state.update(reducer)
     }
 
     protected fun postSideEffect(sideEffect: SIDE_EFFECT) {

@@ -1,6 +1,5 @@
 package com.sun5066.presentation.main
 
-import androidx.lifecycle.SavedStateHandle
 import com.sun5066.base.mvi.CommonViewModel
 import com.sun5066.domain.usecase.GetAccountUseCase
 import com.sun5066.presentation.main.ui.model.mapper.AccountDtoToVoMapper
@@ -12,9 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getAccountUseCase: GetAccountUseCase,
-    private val accountDtoToVoMapper: AccountDtoToVoMapper,
-    savedStateHandle: SavedStateHandle
-) : CommonViewModel<MainIntent, MainState>(MainState.Init, savedStateHandle) {
+    private val accountDtoToVoMapper: AccountDtoToVoMapper
+) : CommonViewModel<MainIntent, MainState>(MainState.Init) {
 
     override fun processIntent(intent: MainIntent) {
         when (intent) {
