@@ -14,9 +14,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import com.sun5066.base.mvi.CommonSideEffect
+import com.sun5066.base.ui.component.LoadingDialog
 import com.sun5066.base.ui.theme.LolTheme
+import com.sun5066.base.util.CollectSideEffect
 import com.sun5066.presentation.main.ui.screen.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -33,17 +37,17 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf(false)
                 }
 
-//                viewModel.sideEffect.CollectSideEffect { sideEffect ->
-//                    when (sideEffect) {
-//                        is CommonSideEffect.ShowSnackBarRes -> {
-//                            launch { snackBarHostState.showSnackbar(getString(sideEffect.res)) }
-//                        }
-//
-//                        is CommonSideEffect.LoadingIndicator -> {
-//                            setShowProgressIndicator(sideEffect.show)
-//                        }
-//                    }
-//                }
+                viewModel.sideEffect.CollectSideEffect { sideEffect ->
+                    when (sideEffect) {
+                        is CommonSideEffect.ShowSnackBarRes -> {
+                            launch { snackBarHostState.showSnackbar(getString(sideEffect.res)) }
+                        }
+
+                        is CommonSideEffect.LoadingIndicator -> {
+                            setShowProgressIndicator(sideEffect.show)
+                        }
+                    }
+                }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -55,7 +59,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding),
                         onIntent = viewModel::processIntent
                     )
-//                    LoadingDialog(showProgressIndicator)
+                    LoadingDialog(showProgressIndicator)
                 }
             }
         }
