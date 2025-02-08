@@ -2,9 +2,9 @@ package com.sun5066.presentation.main
 
 import com.sun5066.base.BaseViewModel
 import com.sun5066.base.CommonEffect
-import com.sun5066.domain.usecase.GetAccountUseCase
+import com.sun5066.domain.usecase.GetSummonerUseCase
 import com.sun5066.presentation.R
-import com.sun5066.presentation.main.model.mapper.AccountDtoToVoMapper
+import com.sun5066.presentation.main.model.mapper.SummonerDtoToVoMapper
 import com.sun5066.presentation.main.mvi.MainEffect
 import com.sun5066.presentation.main.mvi.MainIntent
 import com.sun5066.presentation.main.mvi.MainState
@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getAccountUseCase: GetAccountUseCase,
-    private val accountDtoToVoMapper: AccountDtoToVoMapper
+    private val getSummonerUseCase: GetSummonerUseCase,
+    private val summonerDtoToVoMapper: SummonerDtoToVoMapper
 ) : BaseViewModel<MainIntent, MainState, MainEffect>(MainState.init()) {
 
     override fun processIntent(intent: MainIntent) {
@@ -51,9 +51,9 @@ class MainViewModel @Inject constructor(
                 safeLaunch(
                     onComplete = { updateState { copy(showLoadingProgress = false) } }
                 ) {
-                    val account = getAccountUseCase(gameName, tagLine).let(accountDtoToVoMapper::toModel)
+                    val account = getSummonerUseCase(gameName, tagLine).let(summonerDtoToVoMapper::toModel)
 
-                    updateState { copy(account = account) }
+                    updateState { copy(summoner = account) }
                 }
             }
     }

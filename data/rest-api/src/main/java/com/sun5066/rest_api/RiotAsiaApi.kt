@@ -4,7 +4,7 @@ import com.sun5066.source.model.AccountResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface AccountApi {
+interface RiotAsiaApi {
 
     @GET("v1/accounts/by-riot-id/{gameName}/{tagLine}")
     suspend fun getAccount(
