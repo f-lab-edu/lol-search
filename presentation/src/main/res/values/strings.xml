@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snack_bar_message_invalid_search_text_format">검색어가 올바른 형식이 아닙니다. 확인 후 다시 입력해주세요.</string>
+    <string name="snack_bar_message_invalid_search_text_format_tagline">검색어에 \'#\' 구분자가 포함되어야 하며, 게임 이름과 태그라인을 구분할 수 있어야 합니다.</string>
+    <string name="snack_bar_message_empty_or_blank_tagline">태그라인이 비어 있거나 공백만 포함하고 있습니다.</string>
+</resources>

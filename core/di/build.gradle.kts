@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.lol.android.library)
     alias(libs.plugins.lol.android.hilt)
@@ -5,20 +7,28 @@ plugins {
 }
 
 android {
+    namespace = "com.sun5066.di"
+
+    val localPropertiesFile = rootProject.file("local.properties")
+    val localProperties = Properties()
+
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+
     defaultConfig {
-        val asiaAccountUrl = "https://asia.api.riotgames.com/riot/account/"
-        val krBaseUrl = "https://kr.api.riotgames.com/lol/"
-        val token = "RGAPI-5991d518-0403-41f0-a4cb-3ce4ff0bccf7"
+        val asiaAccountUrl = localProperties.getProperty("asiaAccountUrl", "")
+        val krBaseUrl = localProperties.getProperty("krBaseUrl", "")
+        val token = localProperties.getProperty("token", "")
 
         buildConfigField("String", "ASIA_ACCOUNT_URL", "\"$asiaAccountUrl\"")
         buildConfigField("String", "KR_BASE_URL", "\"$krBaseUrl\"")
         buildConfigField("String", "TOKEN", "\"$token\"")
     }
-    namespace = "com.sun5066.di"
 }
 
 dependencies {
-    implementation(projects.core.config)
+    implementation(projects.core.common)
     implementation(projects.domain)
     implementation(projects.data.source)
     implementation(projects.data.restApi)

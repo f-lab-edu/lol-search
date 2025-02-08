@@ -10,7 +10,7 @@ android {
 
 dependencies {
     implementation(projects.core.base)
-    implementation(projects.core.config)
+    implementation(projects.core.common)
     implementation(projects.domain)
 
     implementation(libs.androidx.core.ktx)
@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.lifecycle)
 
+    implementation(libs.coil)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

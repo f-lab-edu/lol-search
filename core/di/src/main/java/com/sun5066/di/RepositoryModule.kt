@@ -1,7 +1,7 @@
 package com.sun5066.di
 
-import com.sun5066.domain.repository.AccountRepository
-import com.sun5066.source.repository.AccountRepositoryImpl
+import com.sun5066.domain.repository.RiotRepository
+import com.sun5066.source.repository.RiotRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 interface RepositoryModule {
     @Binds
     @Singleton
-    fun bindAccountRepository(accountRepository: AccountRepositoryImpl): AccountRepository
+    fun bindAccountRepository(accountRepository: RiotRepositoryImpl): RiotRepository
 }
