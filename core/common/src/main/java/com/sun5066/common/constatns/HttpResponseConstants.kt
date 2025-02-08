@@ -1,0 +1,11 @@
+package com.sun5066.common.constatns
+
+object HttpResponseConstants {
+    const val RESPONSE_CODE_400_BAD_REQUEST = 400
+    const val RESPONSE_CODE_401_UNAUTHORIZED = 401
+    const val RESPONSE_CODE_403_FORBIDDEN = 403
+    const val RESPONSE_CODE_404_NOT_FOUND = 404
+    const val RESPONSE_CODE_429_RATE_LIMIT_EXCEEDED = 429
+    const val RESPONSE_CODE_500_INTERNAL_SERVER_ERROR = 500
+    const val RESPONSE_CODE_503_SERVICE_UNAVAILABLE = 503
+}

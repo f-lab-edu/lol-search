@@ -1,6 +1,6 @@
 package com.sun5066.rest_api.interceptor
 
-import com.sun5066.config.Constants
+import com.sun5066.common.constatns.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

@@ -10,7 +10,7 @@ android {
 
 dependencies {
     implementation(projects.data.source)
-    implementation(projects.core.config)
+    implementation(projects.core.common)
 
     implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.retrofit)

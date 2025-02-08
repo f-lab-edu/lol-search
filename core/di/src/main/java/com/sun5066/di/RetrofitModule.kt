@@ -1,6 +1,6 @@
 package com.sun5066.di
 
-import com.sun5066.config.Constants
+import com.sun5066.common.constatns.Constants
 import com.sun5066.rest_api.AccountApi
 import com.sun5066.rest_api.interceptor.AuthenticationInterceptor
 import com.sun5066.rest_api.interceptor.ResponseErrorHandleInterceptor
@@ -45,9 +45,9 @@ class RetrofitModule {
         .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
         .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
         .writeTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)
-        .addInterceptor(httpLoggingInterceptor)
         .addInterceptor(authenticationInterceptor)
         .addInterceptor(responseErrorHandleInterceptor)
+        .addInterceptor(httpLoggingInterceptor)
         .build()
 
     @Provides
@@ -58,11 +58,11 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(
+    fun provideAccountRetrofit(
         httpClient: OkHttpClient,
         @Named(Constants.INJECT_NAMED_KOTLINX_SERIALIZATION) json: Json,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.KR_BASE_URL)
+        .baseUrl(BuildConfig.ASIA_ACCOUNT_URL)
         .client(httpClient)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
