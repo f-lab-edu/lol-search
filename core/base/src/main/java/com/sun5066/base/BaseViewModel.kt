@@ -10,12 +10,14 @@ import com.sun5066.common.exception.HttpResponseException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
@@ -90,20 +92,31 @@ abstract class BaseViewModel<INTENT : BaseIntent, STATE : BaseState, SIDE_EFFECT
     protected fun safeLaunch(
         scope: CoroutineScope = viewModelScope,
         coroutineContext: CoroutineContext = defaultCEH,
-        onError: ((Throwable) -> Unit)? = null,
-        onComplete: (() -> Unit)? = null,
+        onError: ((Throwable) -> Boolean)? = null,
+        onActionCancel: (() -> Unit)? = null,
+        onActionComplete: (() -> Unit)? = null,
+        onJobComplete: (() -> Unit)? = null,
         action: suspend CoroutineScope.() -> Unit
     ): Job = scope.launch(coroutineContext) {
-        runCatching {
+        try {
             action()
-        }.onFailure { throwable ->
-            if (throwable is CancellationException) return@onFailure
-
-            onError?.invoke(throwable) ?: commonErrorHandle(throwable)
+        } catch (e: CancellationException) {
+            withContext(NonCancellable) {
+                onActionCancel?.invoke()
+            }
+            throw e
+        } catch (e: Exception) {
+            if (onError == null || !onError.invoke(e)) {
+                commonErrorHandle(e)
+            }
+        } finally {
+            withContext(NonCancellable) {
+               onActionComplete?.invoke()
+            }
         }
     }.apply {
-        if (onComplete != null) {
-            invokeOnCompletion { onComplete() }
+        if (onJobComplete != null) {
+            invokeOnCompletion { onJobComplete() }
         }
     }
 
