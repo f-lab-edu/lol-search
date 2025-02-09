@@ -6,5 +6,7 @@ data class SummonerDto(
     val accountId: String,
     val profileIconId: Int,
     val revisionDate: Long,
-    val summonerLevel: Int
+    val summonerLevel: Int,
+    val gameName: String,
+    val tagLine: String
 )

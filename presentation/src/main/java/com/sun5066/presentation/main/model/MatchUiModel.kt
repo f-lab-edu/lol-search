@@ -6,11 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class Summoner(
-    val id: String,
-    val puuId: String,
-    val accountId: String,
-    val profileIconId: Int,
-    val revisionDate: Long,
-    val summonerLevel: Int
+data class MatchUiModel(
+    val metadata: MetadataUiModel,
+    val info: InfoUiModel
 ) : Parcelable

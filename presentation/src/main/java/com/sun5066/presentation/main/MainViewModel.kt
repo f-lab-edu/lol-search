@@ -2,20 +2,28 @@ package com.sun5066.presentation.main
 
 import com.sun5066.base.BaseViewModel
 import com.sun5066.base.CommonEffect
+import com.sun5066.common.constatns.Constants
+import com.sun5066.domain.usecase.GetMatchesUseCase
 import com.sun5066.domain.usecase.GetSummonerUseCase
 import com.sun5066.presentation.R
-import com.sun5066.presentation.main.model.mapper.SummonerDtoToVoMapper
+import com.sun5066.presentation.main.model.mapper.MatchDtoToMatchUiModelMapper
+import com.sun5066.presentation.main.model.mapper.SummonerDtoToUiModelMapper
 import com.sun5066.presentation.main.mvi.MainEffect
 import com.sun5066.presentation.main.mvi.MainIntent
 import com.sun5066.presentation.main.mvi.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getSummonerUseCase: GetSummonerUseCase,
-    private val summonerDtoToVoMapper: SummonerDtoToVoMapper
+    private val summonerDtoToUiModelMapper: SummonerDtoToUiModelMapper,
+    private val getMatchesUseCase: GetMatchesUseCase,
+    private val matchUiModelMapper: MatchDtoToMatchUiModelMapper
 ) : BaseViewModel<MainIntent, MainState, MainEffect>(MainState.init()) {
+
+    private val matchesCurrentPage = AtomicInteger(0)
 
     override fun processIntent(intent: MainIntent) {
         when (intent) {
@@ -51,9 +59,18 @@ class MainViewModel @Inject constructor(
                 safeLaunch(
                     onJobComplete = { updateState { copy(showLoadingProgress = false) } }
                 ) {
-                    val account = getSummonerUseCase(gameName, tagLine).let(summonerDtoToVoMapper::toModel)
+                    val summoner = getSummonerUseCase(gameName, tagLine)
+                        .let(summonerDtoToUiModelMapper::toModel)
 
-                    updateState { copy(summoner = account) }
+                    val matches = getMatchesUseCase(
+                        puuId = summoner.puuId,
+                        start = matchesCurrentPage.get(),
+                        count = Constants.MATCHES_PAGE_SIZE
+                    ).map(matchUiModelMapper::toModel)
+
+                    matchesCurrentPage.incrementAndGet()
+
+                    updateState { copy(summoner = summoner, matches = matches) }
                 }
             }
     }
