@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sun5066.base.mvi.BaseEffect
 import com.sun5066.base.mvi.BaseIntent
 import com.sun5066.base.mvi.BaseState
+import com.sun5066.common.constatns.HttpResponseCode
 import com.sun5066.common.constatns.HttpResponseConstants
 import com.sun5066.common.exception.HttpResponseException
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -46,7 +47,7 @@ abstract class BaseViewModel<INTENT : BaseIntent, STATE : BaseState, SIDE_EFFECT
         }
     }
 
-    private fun commonHttpResponseExceptionHandle(responseCode: Int) {
+    private fun commonHttpResponseExceptionHandle(@HttpResponseCode responseCode: Int) {
         when (responseCode) {
             HttpResponseConstants.RESPONSE_CODE_400_BAD_REQUEST -> R.string.error_http_status_400
             HttpResponseConstants.RESPONSE_CODE_401_UNAUTHORIZED -> R.string.error_http_status_401
