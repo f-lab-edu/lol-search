@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 interface RiotKoreaApi {
 
-    @GET("summoner/v4/summoners/by-puuid/{puuid}")
+    @GET("lol/summoner/v4/summoners/by-puuid/{puuid}")
     @Cacheable(value = 30, timeUnit = TimeUnit.DAYS)
     suspend fun getSummoner(@Path("puuid") puuId: String): SummonerResponse
 
