@@ -2,14 +2,14 @@ package com.sun5066.presentation.main.model.mapper
 
 import com.sun5066.domain.model.ObjectivesDto
 import com.sun5066.domain.model.mapper.EntityMapper
-import com.sun5066.presentation.main.model.ObjectivesUiModel
+import com.sun5066.presentation.main.model.Objectives
 import javax.inject.Inject
 
-class ObjectivesDtoToObjectivesUiModelMapper @Inject constructor(
-    private val objectiveMapper: ObjectiveDtoToObjectiveUiModelMapper
-) : EntityMapper<ObjectivesDto, ObjectivesUiModel> {
-    override fun toModel(entity: ObjectivesDto): ObjectivesUiModel {
-        return ObjectivesUiModel(
+class ObjectivesDtoToObjectivesMapper @Inject constructor(
+    private val objectiveMapper: ObjectiveDtoToObjectiveMapper
+) : EntityMapper<ObjectivesDto, Objectives> {
+    override fun toModel(entity: ObjectivesDto): Objectives {
+        return Objectives(
             atakhan = objectiveMapper.toModel(entity.atakhan),
             baron = objectiveMapper.toModel(entity.baron),
             champion = objectiveMapper.toModel(entity.champion),

@@ -3,27 +3,42 @@ package com.sun5066.presentation.main
 import com.sun5066.base.BaseViewModel
 import com.sun5066.base.CommonEffect
 import com.sun5066.common.constatns.Constants
+import com.sun5066.common.constatns.HttpResponseConstants
+import com.sun5066.common.exception.HttpResponseException
 import com.sun5066.domain.usecase.GetMatchesUseCase
 import com.sun5066.domain.usecase.GetSummonerUseCase
 import com.sun5066.presentation.R
-import com.sun5066.presentation.main.model.mapper.MatchDtoToMatchUiModelMapper
-import com.sun5066.presentation.main.model.mapper.SummonerDtoToUiModelMapper
+import com.sun5066.presentation.main.model.Summoner
+import com.sun5066.presentation.main.model.mapper.MatchDtoToMatchInfoMapper
+import com.sun5066.presentation.main.model.mapper.SummonerDtoToSummonerMapper
 import com.sun5066.presentation.main.mvi.MainEffect
 import com.sun5066.presentation.main.mvi.MainIntent
 import com.sun5066.presentation.main.mvi.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getSummonerUseCase: GetSummonerUseCase,
-    private val summonerDtoToUiModelMapper: SummonerDtoToUiModelMapper,
+    private val summonerDtoToSummonerMapper: SummonerDtoToSummonerMapper,
     private val getMatchesUseCase: GetMatchesUseCase,
-    private val matchUiModelMapper: MatchDtoToMatchUiModelMapper
+    private val matchUiModelMapper: MatchDtoToMatchInfoMapper
 ) : BaseViewModel<MainIntent, MainState, MainEffect>(MainState.init()) {
 
-    private val matchesCurrentPage = AtomicInteger(0)
+    private var matchesCurrentPage = AtomicInteger(0)
+
+    private lateinit var summoner: Summoner
+    private var currentJob: Job? = null
+
+    override fun commonErrorHandle(error: Throwable?) {
+        super.commonErrorHandle(error)
+
+        if (error is HttpResponseException && error.responseCode == HttpResponseConstants.RESPONSE_CODE_429_RATE_LIMIT_EXCEEDED) {
+            currentJobCancel()
+        }
+    }
 
     override fun processIntent(intent: MainIntent) {
         when (intent) {
@@ -31,7 +46,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun currentJobCancel() {
+        if (currentJob?.isActive == true) {
+            currentJob?.cancel()
+            currentJob = null
+        }
+    }
+
     private fun search(intent: MainIntent.Search) {
+        currentJobCancel()
+
         runCatching {
             // '#' 문자를 기준으로 최대 2개로 분리하여 게임 이름과 태그라인을 구분
             val parts = intent.searchText.split("#", limit = 2)
@@ -56,21 +80,23 @@ class MainViewModel @Inject constructor(
             .onSuccess { (gameName, tagLine) ->
                 updateState { copy(showLoadingProgress = true) }
 
-                safeLaunch(
+                currentJob = safeLaunch(
                     onJobComplete = { updateState { copy(showLoadingProgress = false) } }
                 ) {
-                    val summoner = getSummonerUseCase(gameName, tagLine)
-                        .let(summonerDtoToUiModelMapper::toModel)
+                    summoner = getSummonerUseCase(gameName, tagLine)
+                        .let(summonerDtoToSummonerMapper::toModel)
+
+                    val page = matchesCurrentPage.updateAndGet { 0 }
 
                     val matches = getMatchesUseCase(
                         puuId = summoner.puuId,
-                        start = matchesCurrentPage.get(),
+                        start = page,
                         count = Constants.MATCHES_PAGE_SIZE
                     ).map(matchUiModelMapper::toModel)
 
                     matchesCurrentPage.incrementAndGet()
 
-                    updateState { copy(summoner = summoner, matches = matches) }
+                    updateState { copy(matches = matches) }
                 }
             }
     }

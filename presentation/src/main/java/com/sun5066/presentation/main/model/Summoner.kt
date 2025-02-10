@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class SummonerUiModel(
+data class Summoner(
     val id: String,
     val puuId: String,
     val accountId: String,

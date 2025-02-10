@@ -6,9 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class TeamUiModel(
-    val bans: List<BanUiModel>,
-    val objectives: ObjectivesUiModel,
-    val teamId: Int,
-    val win: Boolean
+data class Ban(
+    val championId: Int,
+    val pickTurn: Int
 ) : Parcelable

@@ -2,15 +2,15 @@ package com.sun5066.presentation.main.model.mapper
 
 import com.sun5066.domain.model.InfoDto
 import com.sun5066.domain.model.mapper.EntityMapper
-import com.sun5066.presentation.main.model.InfoUiModel
+import com.sun5066.presentation.main.model.GameInfo
 import javax.inject.Inject
 
-class InfoDtoToInfoUiModelMapper @Inject constructor(
-    private val participantMapper: ParticipantDtoToParticipantUiModelMapper,
-    private val teamMapper: TeamDtoToTeamUiModelMapper
-) : EntityMapper<InfoDto, InfoUiModel> {
-    override fun toModel(entity: InfoDto): InfoUiModel {
-        return InfoUiModel(
+class InfoDtoToGameInfoMapper @Inject constructor(
+    private val participantMapper: ParticipantDtoToParticipantMapper,
+    private val teamMapper: TeamDtoToTeamMapper
+) : EntityMapper<InfoDto, GameInfo> {
+    override fun toModel(entity: InfoDto): GameInfo {
+        return GameInfo(
             endOfGameResult = entity.endOfGameResult,
             gameCreation = entity.gameCreation,
             gameDuration = entity.gameDuration,

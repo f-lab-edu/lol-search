@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class ParticipantUiModel(
+data class Participant(
     val summonerName: String,
     val individualPosition: String,
     val totalDamageDealtToChampions: Int,

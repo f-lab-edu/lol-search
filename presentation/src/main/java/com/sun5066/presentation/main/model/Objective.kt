@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class MatchUiModel(
-    val metadata: MetadataUiModel,
-    val info: InfoUiModel
+data class Objective(
+    val first: Boolean,
+    val kills: Int
 ) : Parcelable

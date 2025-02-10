@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class InfoUiModel(
+data class GameInfo(
     val endOfGameResult: String,
     val gameCreation: Long,
     val gameDuration: Int,
@@ -18,9 +18,9 @@ data class InfoUiModel(
     val gameType: String,
     val gameVersion: String,
     val mapId: Int,
-    val participants: List<ParticipantUiModel>,
+    val participants: List<Participant>,
     val platformId: String,
     val queueId: Int,
-    val teams: List<TeamUiModel>,
+    val teams: List<Team>,
     val tournamentCode: String
 ) : Parcelable

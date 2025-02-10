@@ -2,12 +2,12 @@ package com.sun5066.presentation.main.model.mapper
 
 import com.sun5066.domain.model.ParticipantDto
 import com.sun5066.domain.model.mapper.EntityMapper
-import com.sun5066.presentation.main.model.ParticipantUiModel
+import com.sun5066.presentation.main.model.Participant
 import javax.inject.Inject
 
-class ParticipantDtoToParticipantUiModelMapper @Inject constructor() : EntityMapper<ParticipantDto, ParticipantUiModel> {
-    override fun toModel(entity: ParticipantDto): ParticipantUiModel {
-        return ParticipantUiModel(
+class ParticipantDtoToParticipantMapper @Inject constructor() : EntityMapper<ParticipantDto, Participant> {
+    override fun toModel(entity: ParticipantDto): Participant {
+        return Participant(
             summonerName = entity.summonerName,
             individualPosition = entity.individualPosition,
             totalDamageDealtToChampions = entity.totalDamageDealtToChampions,

@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Immutable
 @Parcelize
-data class MetadataUiModel(
+data class MetadataInfo(
     val dataVersion: String,
     val matchId: String,
     val participants: List<String>
