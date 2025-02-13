@@ -10,5 +10,6 @@ object Constants {
     const val OKHTTP_CACHE_MIN_SIZE = 10 * 1024 * 1024L // 10MB
     const val OKHTTP_CACHE_MAX_SIZE = 100 * 1024 * 1024L // 100MB
 
-    const val MATCHES_PAGE_SIZE = 20
+    const val MATCHES_PAGE_SIZE = 5
+    const val MATCHES_LOAD_PAGE_DISTANCE = 2
 }

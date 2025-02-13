@@ -43,6 +43,7 @@ class MainViewModel @Inject constructor(
     override fun processIntent(intent: MainIntent) {
         when (intent) {
             is MainIntent.Search -> search(intent)
+            is MainIntent.LoadMorePage -> loadMorePage()
         }
     }
 
@@ -99,6 +100,21 @@ class MainViewModel @Inject constructor(
                     updateState { copy(matches = matches) }
                 }
             }
+    }
+
+    private fun loadMorePage() {
+        safeLaunch {
+            val page = matchesCurrentPage.get()
+            val matches = getMatchesUseCase(
+                puuId = summoner.puuId,
+                start = page,
+                count = Constants.MATCHES_PAGE_SIZE
+            ).map(matchUiModelMapper::toModel)
+
+            matchesCurrentPage.incrementAndGet()
+
+            updateState { copy(matches = currentState.matches + matches) }
+        }
     }
 
 }
