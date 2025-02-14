@@ -48,7 +48,7 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun providesCache(@ApplicationContext context: Context): Cache {
+    fun provideCache(@ApplicationContext context: Context): Cache {
         val cacheDir = File(context.cacheDir, Constants.OKHTTP_CACHE_DIR_NAME).apply(File::mkdirs)
         val statFs = StatFs(cacheDir.absolutePath)
         val availableBytes = statFs.availableBytes
@@ -85,27 +85,24 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    @RetrofitRiotAsia
-    fun provideAccountRetrofit(
+    fun provideRetrofitBuilder(
         httpClient: OkHttpClient,
         @Named(Constants.INJECT_NAMED_KOTLINX_SERIALIZATION) json: Json,
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.ASIA_ACCOUNT_URL)
+    ): Retrofit.Builder = Retrofit.Builder()
         .client(httpClient)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
+
+    @Provides
+    @Singleton
+    @RetrofitRiotAsia
+    fun provideRiotAsiaRetrofit(builder: Retrofit.Builder): Retrofit =
+        builder.baseUrl(BuildConfig.ASIA_ACCOUNT_URL).build()
 
     @Provides
     @Singleton
     @RetrofitRiotKorea
-    fun provideRiotKoreaRetrofit(
-        httpClient: OkHttpClient,
-        @Named(Constants.INJECT_NAMED_KOTLINX_SERIALIZATION) json: Json,
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.KR_BASE_URL)
-        .client(httpClient)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
+    fun provideRiotKoreaRetrofit(builder: Retrofit.Builder): Retrofit =
+        builder.baseUrl(BuildConfig.KR_BASE_URL).build()
 
     @Provides
     @Singleton

@@ -17,7 +17,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig {
-                    applicationId = "com.sun5066.wanted"
+                    applicationId = "com.sun5066.lol_search"
                     versionCode = 1
                     versionName = "1.0"
                 }
