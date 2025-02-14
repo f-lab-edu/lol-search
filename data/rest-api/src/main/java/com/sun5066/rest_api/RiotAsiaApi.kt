@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 interface RiotAsiaApi {
 
-    @GET("v1/accounts/by-riot-id/{gameName}/{tagLine}")
+    @GET("lol/v1/accounts/by-riot-id/{gameName}/{tagLine}")
     @Cacheable(value = 30, timeUnit = TimeUnit.DAYS)
     suspend fun getAccount(
         @Path("gameName") gameName: String,
