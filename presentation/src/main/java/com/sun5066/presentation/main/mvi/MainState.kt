@@ -1,24 +1,25 @@
 package com.sun5066.presentation.main.mvi
 
-import android.os.Parcelable
 import androidx.compose.runtime.Stable
 import com.sun5066.base.mvi.BaseState
-import com.sun5066.presentation.main.model.Summoner
-import kotlinx.parcelize.Parcelize
+import com.sun5066.presentation.main.model.MatchUiModel
+import com.sun5066.presentation.main.model.SummonerUiModel
 
 @Stable
-@Parcelize
 data class MainState(
-    val summoner: Summoner?,
+    val summoner: SummonerUiModel?,
+    val matches: List<MatchUiModel>,
     val showLoadingProgress: Boolean
-) : BaseState, Parcelable {
+) : BaseState {
     companion object {
         fun init(
-            summoner: Summoner? = null,
+            summoner: SummonerUiModel? = null,
+            matches: List<MatchUiModel> = emptyList(),
             showLoadingProgress: Boolean = false
         ): MainState {
             return MainState(
                 summoner = summoner,
+                matches = matches,
                 showLoadingProgress = showLoadingProgress
             )
         }

@@ -1,17 +1,19 @@
-package com.sun5066.source.model.mapper
+package com.sun5066.presentation.main.model.mapper
 
 import com.sun5066.domain.model.SummonerDto
 import com.sun5066.domain.model.mapper.EntityMapper
-import com.sun5066.source.model.SummonerResponse
+import com.sun5066.presentation.main.model.Summoner
 import javax.inject.Inject
 
-class SummonerResponseToDtoMapper @Inject constructor() : EntityMapper<SummonerResponse, SummonerDto> {
-    override fun toModel(entity: SummonerResponse): SummonerDto = SummonerDto(
+class SummonerDtoToSummonerMapper @Inject constructor() : EntityMapper<SummonerDto, Summoner> {
+    override fun toModel(entity: SummonerDto): Summoner = Summoner(
         id = entity.id,
         puuId = entity.puuId,
         accountId = entity.accountId,
         profileIconId = entity.profileIconId,
         revisionDate = entity.revisionDate,
         summonerLevel = entity.summonerLevel,
+        gameName = entity.gameName,
+        tagLine = entity.tagLine
     )
 }
