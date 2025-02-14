@@ -49,7 +49,7 @@ class MainViewModel @Inject constructor(
                 updateState { copy(showLoadingProgress = true) }
 
                 safeLaunch(
-                    onComplete = { updateState { copy(showLoadingProgress = false) } }
+                    onJobComplete = { updateState { copy(showLoadingProgress = false) } }
                 ) {
                     val account = getSummonerUseCase(gameName, tagLine).let(summonerDtoToVoMapper::toModel)
 
