@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sun5066.config"
+    namespace = "com.sun5066.common"
 }
 
 dependencies {
